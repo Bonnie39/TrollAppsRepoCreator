@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>AltStore Repo Generator</title>
+</head>
+<body>
+    <div id="container">
+        <!-- Repo Details -->
+        <label for="repoName">Repo Name:</label>
+        <input type="text" id="repoName" placeholder="Enter repo name">
+
+        <label for="repoSubtitle">Repo Subtitle:</label>
+        <input type="text" id="repoSubtitle" placeholder="Enter repo subtitle">
+
+        <label for="repoDescription">Repo Description:</label>
+        <textarea id="repoDescription" placeholder="Enter repo description"></textarea>
+
+        <label for="repoIconURL">Repo Icon URL:</label>
+        <input type="text" id="repoIconURL" placeholder="Enter repo icon URL">
+
+        <label for="repoHeaderURL">Repo Header URL:</label>
+        <input type="text" id="repoHeaderURL" placeholder="Enter repo header URL">
+
+        <label for="repoWebsite">Repo Website:</label>
+        <input type="text" id="repoWebsite" placeholder="Enter repo website URL">
+
+        <label for="repoTintColor">Repo Tint Color:</label>
+        <input type="text" id="repoTintColor" placeholder="Enter repo tint color">
+
+        <!-- Add App Button -->
+        <button onclick="addApp()">+ Add App</button>
+
+        <!-- Apps Container -->
+        <div id="appsContainer"></div>
+
+        <!-- Generate Repo Button -->
+        <button onclick="generateRepo()">Generate Repo</button>
+
+        <!-- Image Preview -->
+        <img id="previewImage" alt="Image Preview">
+    </div>
+
+    <script src="/js/index.js"></script>
+</body>
+</html>
