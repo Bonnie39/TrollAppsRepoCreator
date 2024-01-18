@@ -9,6 +9,12 @@
 </head>
 <body>
     <div id="container">
+        <!-- Import Repo -->
+        <label for="importRepo">Import Repo from JSON:</label>
+        <input type="file" id="importRepo" accept=".json">
+        <input type="url" id="importRepoURL" placeholder="Enter JSON URL">
+        <button onclick="importRepo()">Import Repo</button>
+
         <!-- Repo Details -->
         <label for="repoName">Repo Name:</label>
         <input type="text" id="repoName" placeholder="Enter repo name">
@@ -31,11 +37,11 @@
         <label for="repoTintColor">Repo Tint Color:</label>
         <input type="text" id="repoTintColor" placeholder="Enter repo tint color">
 
-        <!-- Add App Button -->
-        <button onclick="addApp()">+ Add App</button>
-
         <!-- Apps Container -->
         <div id="appsContainer"></div>
+
+        <!-- Add App Button -->
+        <button onclick="addApp()">+ Add App</button>
 
         <!-- Generate Repo Button -->
         <button onclick="generateRepo()">Generate Repo</button>

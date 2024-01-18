@@ -71,6 +71,12 @@ document.addEventListener('click', function (event) {
 
 function generateRepo() {
     const repoName = document.getElementById('repoName').value;
+    const repoSubtitle = document.getElementById('repoSubtitle').value;
+    const repoDescription = document.getElementById('repoDescription').value;
+    const repoIconURL = document.getElementById('repoIconURL').value;
+    const repoHeaderURL = document.getElementById('repoHeaderURL').value;
+    const repoWebsite = document.getElementById('repoWebsite').value;
+    const repoTintColor = document.getElementById('repoTintColor').value;
 
     if (!repoName) {
         console.error("Repo Name is required!");
@@ -82,6 +88,13 @@ function generateRepo() {
     
     const repoJSON = {
         "name": repoName,
+        "subtitle": repoSubtitle,
+        "description": repoDescription,
+        "iconURL": repoIconURL,
+        "headerURL": repoHeaderURL,
+        "website": repoWebsite,
+        "tintColor": repoTintColor,
+        "featuredApps": [],
         "apps": []
     };
 
@@ -121,4 +134,56 @@ function generateRepo() {
 
     // Log or do something with the generated JSON
     console.log(JSON.stringify(repoJSON, null, 2));
+}
+
+function importRepo() {
+    const importRepoInput = document.getElementById('importRepo');
+    const importRepoURLInput = document.getElementById('importRepoURL');
+
+    if (importRepoInput.files.length > 0) {
+        const fileReader = new FileReader();
+        fileReader.onload = function (event) {
+            const importedData = JSON.parse(event.target.result);
+            fillRepoData(importedData);
+        };
+        fileReader.readAsText(importRepoInput.files[0]);
+    } else if (importRepoURLInput.value.trim() !== '') {
+        fetch(importRepoURLInput.value)
+            .then(response => response.json())
+            .then(data => fillRepoData(data))
+            .catch(error => console.error('Error fetching JSON:', error));
+    } else {
+        console.error('Please select a file or enter a JSON URL.');
+    }
+}
+
+function fillRepoData(importedData) {
+    document.getElementById('repoName').value = importedData.name || '';
+    document.getElementById('repoSubtitle').value = importedData.subtitle || '';
+    document.getElementById('repoDescription').value = importedData.description || '';
+    document.getElementById('repoIconURL').value = importedData.iconURL || '';
+    document.getElementById('repoHeaderURL').value = importedData.headerURL || '';
+    document.getElementById('repoWebsite').value = importedData.website || '';
+    document.getElementById('repoTintColor').value = importedData.tintColor || '';
+
+    // Clear existing apps and versions
+    document.getElementById('appsContainer').innerHTML = '';
+
+    // Add imported apps and versions
+    importedData.apps.forEach((app) => {
+        addApp();
+        const appDiv = document.querySelector('.app:last-of-type');
+        appDiv.querySelector('.appName').value = app.name || '';
+        appDiv.querySelector('.appBundleIdentifier').value = app.bundleIdentifier || '';
+        appDiv.querySelector('.appIconURL').value = app.iconURL || '';
+        appDiv.querySelector('.appTintColor').value = app.tintColor || '';
+
+        app.versions.forEach((version) => {
+            addVersion({ target: appDiv.querySelector('.addVersionBtn') });
+            const versionDiv = appDiv.querySelector('.versionsContainer .version:last-of-type');
+            versionDiv.querySelector('.appVersion').value = version.version || '';
+            versionDiv.querySelector('.appDownloadURL').value = version.downloadURL || '';
+            versionDiv.querySelector('.appSize').value = version.size || '';
+        });
+    });
 }
