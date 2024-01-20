@@ -1,4 +1,5 @@
 let appCount = 0;
+const copiedText = document.getElementById("copied");
 
 function addApp() {
     appCount++;
@@ -23,9 +24,9 @@ function addApp() {
         <label for="appTintColor${appCount}">App Tint Color:</label>
         <input type="text" class="appTintColor">
 
-        <button class="addVersionBtn">+ Add Version</button>
-
         <div class="versionsContainer"></div>
+
+        <button class="addVersionBtn">+ Add Version</button>
     `;
 
     appsContainer.appendChild(appDiv);
@@ -44,6 +45,7 @@ function addVersion(event) {
     const versionCount = versionsContainer.childElementCount + 1;
 
     const versionDiv = document.createElement('div');
+    versionDiv.classList.add('version'); // Add the 'version' class
     versionDiv.innerHTML = `
         <h3>Version ${versionCount}</h3>
 
@@ -61,6 +63,7 @@ function addVersion(event) {
 
     versionsContainer.appendChild(versionDiv);
 }
+
 
 document.addEventListener('click', function (event) {
     if (event.target.classList.contains('addVersionBtn')) {
@@ -95,7 +98,8 @@ function generateRepo() {
         "website": repoWebsite,
         "tintColor": repoTintColor,
         "featuredApps": [],
-        "apps": []
+        "apps": [],
+        "news": []
     };
 
     appDivs.forEach((appDiv) => {
@@ -112,7 +116,8 @@ function generateRepo() {
             "bundleIdentifier": appBundleIdentifier,
             "iconURL": appIconURL,
             "tintColor": appTintColor,
-            "versions": []
+            "versions": [],
+            "appPermissions": {},
         };
 
         versionDivs.forEach((versionDiv) => {
@@ -132,15 +137,27 @@ function generateRepo() {
         repoJSON.apps.push(appObj);
     });
 
-    // Log or do something with the generated JSON
-    console.log(JSON.stringify(repoJSON, null, 2));
+    const outputJson = JSON.stringify(repoJSON, null, 2);
+    //console.log(outputJson);
+
+    navigator.clipboard.writeText(outputJson)
+        .then(() => {
+            console.log("JSON copied to clipboard:", outputJson);
+        })
+        .catch((error) => {
+            console.error("Error copying JSON to clipboard:", error);
+        });
+
+        showAndHideCopiedText();
 }
 
 function importRepo() {
-    const importRepoInput = document.getElementById('importRepo');
+    //const importRepoInput = document.getElementById('importRepo');
     const importRepoURLInput = document.getElementById('importRepoURL');
+    appCount = 0;
+    updateImagePreview();
 
-    if (importRepoInput.files.length > 0) {
+    /*if (importRepoInput.files.length > 0) {
         const fileReader = new FileReader();
         fileReader.onload = function (event) {
             const importedData = JSON.parse(event.target.result);
@@ -148,6 +165,15 @@ function importRepo() {
         };
         fileReader.readAsText(importRepoInput.files[0]);
     } else if (importRepoURLInput.value.trim() !== '') {
+        fetch(importRepoURLInput.value)
+            .then(response => response.json())
+            .then(data => fillRepoData(data))
+            .catch(error => console.error('Error fetching JSON:', error));
+    } else {
+        console.error('Please select a file or enter a JSON URL.');
+    }*/
+
+    if(importRepoURLInput.value.trim() !== '') {
         fetch(importRepoURLInput.value)
             .then(response => response.json())
             .then(data => fillRepoData(data))
@@ -172,18 +198,40 @@ function fillRepoData(importedData) {
     // Add imported apps and versions
     importedData.apps.forEach((app) => {
         addApp();
+
         const appDiv = document.querySelector('.app:last-of-type');
         appDiv.querySelector('.appName').value = app.name || '';
         appDiv.querySelector('.appBundleIdentifier').value = app.bundleIdentifier || '';
         appDiv.querySelector('.appIconURL').value = app.iconURL || '';
         appDiv.querySelector('.appTintColor').value = app.tintColor || '';
 
-        app.versions.forEach((version) => {
-            addVersion({ target: appDiv.querySelector('.addVersionBtn') });
-            const versionDiv = appDiv.querySelector('.versionsContainer .version:last-of-type');
-            versionDiv.querySelector('.appVersion').value = version.version || '';
-            versionDiv.querySelector('.appDownloadURL').value = version.downloadURL || '';
-            versionDiv.querySelector('.appSize').value = version.size || '';
-        });
+        // Check if versions exist before adding them
+        if (app.versions && app.versions.length > 0) {
+            app.versions.forEach(() => {
+                addVersion({ target: appDiv.querySelector('.addVersionBtn') });
+            });
+
+            // Fill in version details
+            const versionDivs = appDiv.querySelectorAll('.versionsContainer .version');
+            console.log('versionDivs:', versionDivs); // Debugging statement
+            app.versions.forEach((version, index) => {
+                const versionDiv = versionDivs[index];
+                console.log('versionDiv:', versionDiv); // Debugging statement
+                if (versionDiv) {
+                    versionDiv.querySelector('.appVersion').value = version.version || '';
+                    versionDiv.querySelector('.appDownloadURL').value = version.downloadURL || '';
+                    versionDiv.querySelector('.appSize').value = version.size || '';
+                }
+            });
+        }
     });
 }
+
+function showAndHideCopiedText() {
+    copiedText.style.visibility = "visible"; // Make the element visible
+  
+    // Hide the element after 1000 milliseconds (1 second)
+    setTimeout(function () {
+      copiedText.style.visibility = "hidden";
+    }, 1000);
+  }

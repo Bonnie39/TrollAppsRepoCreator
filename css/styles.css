@@ -80,8 +80,66 @@ textarea {
 
 #previewImage {
   max-width: 100%;
-  max-height: 250px;
+  max-height: 128px;
   margin-top: 15px;
-  border-radius: 8px;
+  border-radius: 32px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  color: forestgreen;
+  visibility: hidden;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #000000;
+    color: #fff;
+  }
+
+  #container {
+    background-color: #121212;
+  }
+
+  label {
+    color: #bbb;
+  }
+
+  input, textarea, button {
+    background-color: #29292e;
+    border: 1px solid #555;
+    color: #fff;
+  }
+
+  button {
+    background-color: #147efb;
+  }
+
+  button:hover {
+    background-color: #0c5aa1;
+  }
+
+  .app {
+    border: 1px solid #333;
+    background-color: #1c1c1e;
+    color: #fff;
+  }
+
+  .version {
+    border: 1px solid #333;
+    background-color: #29292e;
+    color: #ddd;
+  }
+
+  #previewImage {
+    box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+  }
+
+  p {
+    color: rgb(54, 255, 47);
+  }
 }

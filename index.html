@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/styles.css">
-    <title>AltStore Repo Generator</title>
+    <title>TrollApps Repo Generator</title>
 </head>
 <body>
     <div id="container">
         <!-- Import Repo -->
         <label for="importRepo">Import Repo from JSON:</label>
-        <input type="file" id="importRepo" accept=".json">
+        <!--<input type="file" id="importRepo" accept=".json">-->
         <input type="url" id="importRepoURL" placeholder="Enter JSON URL">
         <button onclick="importRepo()">Import Repo</button>
 
@@ -27,6 +27,9 @@
 
         <label for="repoIconURL">Repo Icon URL:</label>
         <input type="text" id="repoIconURL" placeholder="Enter repo icon URL">
+
+                <!-- Image Preview -->
+                <img id="previewImage" alt="Image Preview">
 
         <label for="repoHeaderURL">Repo Header URL:</label>
         <input type="text" id="repoHeaderURL" placeholder="Enter repo header URL">
@@ -46,10 +49,10 @@
         <!-- Generate Repo Button -->
         <button onclick="generateRepo()">Generate Repo</button>
 
-        <!-- Image Preview -->
-        <img id="previewImage" alt="Image Preview">
+        <p id="copied">JSON copied to clipboard!</p>
     </div>
 
     <script src="/js/index.js"></script>
+    <script src="/js/img.js"></script>
 </body>
 </html>
