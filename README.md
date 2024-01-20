@@ -1,2 +1,6 @@
-# AltRepoCreator
- Web app to create AltStore Sources
+# TrollAppsRepoCreator
+ Web app to create TrollApps Sources
+
+## TO USE:
+Clone this repository to your local machine and open it in VSCode/VSCodium.
+Launch a private server with LiveServer and use the web-app in your browser.
